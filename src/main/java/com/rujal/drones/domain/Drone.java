@@ -1,22 +1,20 @@
 package com.rujal.drones.domain;
 
-import static com.rujal.drones.utils.Constants.ValidationMessages.VALIDATION_SERIAL_NUMBER_TOO_LONG;
+import static com.rujal.drones.utils.Constants.Database.DRONE;
 
 import com.rujal.drones.utils.Model;
 import com.rujal.drones.utils.State;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.validation.constraints.Size;
 
-@Entity(name = "drones")
+@Entity(name = DRONE)
 public class Drone {
 
   @Id
   private Long id;
   @Column(unique = true)
-  @Size(max = 100, message = VALIDATION_SERIAL_NUMBER_TOO_LONG)
   private String serialNumber;
   private Model model;
   private int weightLimit;

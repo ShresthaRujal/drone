@@ -14,6 +14,15 @@ public class Constants {
     public static final String UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE = "([A-Z0-9\\_]+)";
   }
 
+  public static class Database {
+
+    public Database() {
+    }
+
+    public static final String DRONE = "drones";
+    public static final String MEDICATION = "medication";
+  }
+
   public static class ValidationMessages {
 
     private ValidationMessages() {

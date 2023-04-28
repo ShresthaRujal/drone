@@ -1,18 +1,26 @@
-package com.rujal.drones.domain;
+package com.rujal.drones.dto;
 
-import static com.rujal.drones.utils.Constants.Database.MEDICATION;
+import static com.rujal.drones.utils.Constants.Commons.LETTERS_NUMBERS_DASH_UNDERSCORE;
+import static com.rujal.drones.utils.Constants.Commons.UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.validation.constraints.Pattern;
 
-@Entity(name = MEDICATION)
-public class Medication {
-
-  @Id
+public class MedicationDTO {
   private Long id;
+  /**
+   * only letters, numbers, ‘-‘, ‘_’
+   */
+  @Pattern(regexp = LETTERS_NUMBERS_DASH_UNDERSCORE)
   private String name;
   private int weight;
+  /**
+   * only upper case letters, numbers, ‘-‘, ‘_’
+   */
+  @Pattern(regexp = UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE)
   private String code;
+  /**
+   * holds image path of medication case
+   */
   private String image;
 
   public Long getId() {
