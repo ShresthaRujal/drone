@@ -1,14 +1,18 @@
 package com.rujal.drones.converters;
 
+import static java.util.Objects.isNull;
+
 import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.MedicationDTO;
 
-public class MedicationConverter extends BaseConverter<Medication, MedicationDTO> {
+public class MedicationConverter implements BaseConverter<Medication, MedicationDTO> {
 
   @Override
   public Medication fromDto(MedicationDTO dto) {
     Medication medication = new Medication();
-    medication.setId(dto.getId());
+    if (!isNull(dto.getId())) {
+      medication.setId(dto.getId());
+    }
     medication.setWeight(dto.getWeight());
     medication.setCode(dto.getCode());
     medication.setName(dto.getName());

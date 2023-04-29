@@ -1,5 +1,6 @@
 package com.rujal.drones.utils;
 
+import com.rujal.drones.exceptions.BackEndException;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtilsBean;
 
@@ -22,7 +23,7 @@ public class NullAwareBeanUtils extends BeanUtilsBean {
     try {
       super.copyProperties(dest, source);
     } catch (IllegalAccessException | InvocationTargetException e) {
-      throw new RuntimeException(e);
+      throw new BackEndException(e);
     }
   }
 }

@@ -3,20 +3,20 @@ package com.rujal.drones.dto;
 import static com.rujal.drones.utils.Constants.Commons.LETTERS_NUMBERS_DASH_UNDERSCORE;
 import static com.rujal.drones.utils.Constants.Commons.UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 public class MedicationDTO {
   private Long id;
   /**
    * only letters, numbers, ‘-‘, ‘_’
    */
-  @Pattern(regexp = LETTERS_NUMBERS_DASH_UNDERSCORE)
+  @Pattern(regexp = LETTERS_NUMBERS_DASH_UNDERSCORE, message = "Only Upper case letters, Number, '-', '_' are allowed")
   private String name;
   private int weight;
   /**
-   * only upper case letters, numbers, ‘-‘, ‘_’
+   * only upper case letters, numbers, ‘_’
    */
-  @Pattern(regexp = UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE)
+  @Pattern(regexp = UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE, message = "Only Upper case letters, Number, '_' are allowed")
   private String code;
   /**
    * holds image path of medication case

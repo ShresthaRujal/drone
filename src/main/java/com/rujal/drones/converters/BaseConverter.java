@@ -1,39 +1,40 @@
 package com.rujal.drones.converters;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public abstract class BaseConverter<E, D> {
+public interface BaseConverter<E, D> {
 
   public abstract E fromDto(D dto);
 
   public abstract D fromEntity(E entity);
 
-  public List<E> fromDto(List<D> dtos) {
+  public default List<E> fromDto(List<D> dtos) {
     if (dtos == null) {
-      return null;
+      return emptyList();
     }
-    return dtos.stream().map(this::fromDto).collect(toList());
+    return dtos.stream().map(this::fromDto).toList();
   }
 
-  public List<D> fromEntity(List<E> entities) {
-    if (entities == null) {
-      return null;
+  public default List<D> fromEntity(List<E> entities) {
+    if (isNull(entities)) {
+      return emptyList();
     }
-    return entities.stream().map(this::fromEntity).collect(toList());
+    return entities.stream().map(this::fromEntity).toList();
   }
 
-  public Page<E> fromDto(Page<D> dtos) {
-    if (dtos == null) {
+  public default Page<E> fromDto(Page<D> dtos) {
+    if (isNull(dtos)) {
       return null;
     }
     return dtos.map(this::fromDto);
   }
 
-  public Page<D> fromEntity(Page<E> entities) {
-    if (entities == null) {
+  public default Page<D> fromEntity(Page<E> entities) {
+    if (isNull(entities)) {
       return null;
     }
     return entities.map(this::fromEntity);

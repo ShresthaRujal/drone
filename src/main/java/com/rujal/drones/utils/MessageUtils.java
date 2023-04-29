@@ -9,6 +9,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  */
 public class MessageUtils {
 
+  private MessageUtils() {}
   private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
   static ReloadableResourceBundleMessageSource messageSource;
 
