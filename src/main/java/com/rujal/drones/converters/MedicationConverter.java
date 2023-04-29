@@ -3,7 +3,7 @@ package com.rujal.drones.converters;
 import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.MedicationDTO;
 
-public class MedicationConverter extends BaseConverter<Medication, MedicationDTO> {
+public class MedicationConverter implements BaseConverter<Medication, MedicationDTO> {
 
   @Override
   public Medication fromDto(MedicationDTO dto) {

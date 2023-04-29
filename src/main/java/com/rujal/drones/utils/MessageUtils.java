@@ -9,6 +9,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  */
 public class MessageUtils {
 
+  private MessageUtils() {}
   private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
   static ReloadableResourceBundleMessageSource messageSource;
 
@@ -17,8 +18,8 @@ public class MessageUtils {
    */
   static {
     messageSource = new ReloadableResourceBundleMessageSource();
-    String[] basenames = {"classpath:/ValidationMessages"};
-    messageSource.setBasenames(basenames);
+    String[] baseNames = {"classpath:/ValidationMessages"};
+    messageSource.setBasenames(baseNames);
     messageSource.setDefaultEncoding("UTF-8");
   }
 

@@ -42,20 +42,20 @@ public class MedicationServiceImpl extends MedicationConverter implements Medica
   }
 
   @Override
-  public MedicationDTO findMedicationById(Long ID) {
-    LOG.info("Fetching Medication by Id : {}", ID);
-    return fromEntity(medicationRepository.findById(ID)
+  public MedicationDTO findMedicationById(Long id) {
+    LOG.info("Fetching Medication by Id : {}", id);
+    return fromEntity(medicationRepository.findById(id)
         .orElseThrow(() ->
-            new ResourceNotFoundException(getMessage(MEDICATION_NOT_FOUND.getValue(), ID)))
+            new ResourceNotFoundException(getMessage(MEDICATION_NOT_FOUND.getValue(), id)))
     );
   }
 
   @Override
-  public void deleteMedication(Long ID) {
-    LOG.info("Deleting Medication : {}", ID);
-    Medication medication = medicationRepository.findById(ID)
+  public void deleteMedication(Long id) {
+    LOG.info("Deleting Medication : {}", id);
+    Medication medication = medicationRepository.findById(id)
         .orElseThrow(() ->
-            new ResourceNotFoundException(getMessage(MEDICATION_NOT_FOUND.getValue(), ID))
+            new ResourceNotFoundException(getMessage(MEDICATION_NOT_FOUND.getValue(), id))
         );
     medicationRepository.delete(medication);
   }

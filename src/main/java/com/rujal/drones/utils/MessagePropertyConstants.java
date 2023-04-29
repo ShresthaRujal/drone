@@ -3,7 +3,9 @@ package com.rujal.drones.utils;
 public enum MessagePropertyConstants {
 
   DRONE_NOT_FOUND("drone.not.found"),
-  MEDICATION_NOT_FOUND("medication.not.found");
+  MEDICATION_NOT_FOUND("medication.not.found"),
+  DELETED("delete.record"),
+  FIELD_ERROR("field.error");
 
   private String value;
 

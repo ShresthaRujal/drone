@@ -17,10 +17,10 @@ public interface MedicationService {
   /**
    * search and retrieve specific records in the table
    */
-  MedicationDTO findMedicationById(Long ID);
+  MedicationDTO findMedicationById(Long id);
 
   /**
    * delete specific records in the table
    */
-  void deleteMedication(Long ID);
+  void deleteMedication(Long id);
 }

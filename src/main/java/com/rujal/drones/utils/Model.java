@@ -1,5 +1,8 @@
 package com.rujal.drones.utils;
 
+/**
+ * Drone Models
+ */
 public enum Model {
   /**
    Lightweight

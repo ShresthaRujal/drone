@@ -3,12 +3,15 @@ package com.rujal.drones.domain;
 import static com.rujal.drones.utils.Constants.Database.MEDICATION;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity(name = MEDICATION)
 public class Medication {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   private int weight;
