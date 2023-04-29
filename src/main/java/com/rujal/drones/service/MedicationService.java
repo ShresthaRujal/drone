@@ -1,6 +1,8 @@
 package com.rujal.drones.service;
 
+import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.MedicationDTO;
+import java.util.List;
 
 public interface MedicationService {
 
@@ -23,4 +25,6 @@ public interface MedicationService {
    * delete specific records in the table
    */
   void deleteMedication(Long id);
+
+  List<Medication> findMedicationByIds(List<Long> medicationIds);
 }

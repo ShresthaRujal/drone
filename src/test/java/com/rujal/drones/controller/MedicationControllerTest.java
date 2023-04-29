@@ -13,8 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rujal.drones.converters.MedicationConverter;
 import com.rujal.drones.dto.MedicationDTO;
 import com.rujal.drones.utils.BeanConfigTest;
 import org.junit.jupiter.api.Test;
@@ -25,29 +23,28 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(MedicationController.class)
 class MedicationControllerTest extends BeanConfigTest {
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
   @Autowired
   private MockMvc mockMvc;
 
   @Test
   void testCreateMedication() throws Exception {
     given(medicationService.addMedication(any(MedicationDTO.class)))
-        .willReturn(createMedicationDTO(null));
+        .willReturn(createMedicationDTO(ID));
     mockMvc.perform(post(BASE_PATH + MEDICATION_BASE_URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(createMedicationDTO(MEDICATION_ID)))
+            .content(objectMapper.writeValueAsString(createMedicationDTO(ID)))
             .accept(APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").exists())
-        .andExpect(jsonPath("$.name", equalTo(MEDICATION_NAME)))
-        .andExpect(jsonPath("$.code", equalTo(MEDICATION_CODE)))
-        .andExpect(jsonPath("$.weight", equalTo(MEDICATION_WEIGHT)));
+        .andExpect(jsonPath("$.data.id").exists())
+        .andExpect(jsonPath("$.data.name", equalTo(MEDICATION_NAME)))
+        .andExpect(jsonPath("$.data.code", equalTo(MEDICATION_CODE)))
+        .andExpect(jsonPath("$.data.weight", equalTo(MEDICATION_WEIGHT)));
   }
 
   @Test
   void testUpdateMedication() throws Exception {
-    MedicationDTO updateMedicationDT0 = createMedicationDTO(MEDICATION_ID);
+    MedicationDTO updateMedicationDT0 = createMedicationDTO(ID);
     given(medicationService.updateMedication(any(MedicationDTO.class)))
         .willReturn(updateMedicationDT0);
     updateMedicationDT0.setCode(MEDICATION_CODE_2);
@@ -57,31 +54,31 @@ class MedicationControllerTest extends BeanConfigTest {
             .accept(APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").exists())
-        .andExpect(jsonPath("$.name", equalTo(MEDICATION_NAME)))
-        .andExpect(jsonPath("$.code", equalTo(MEDICATION_CODE_2)))
-        .andExpect(jsonPath("$.weight", equalTo(MEDICATION_WEIGHT)));
+        .andExpect(jsonPath("$.data.id").exists())
+        .andExpect(jsonPath("$.data.name", equalTo(MEDICATION_NAME)))
+        .andExpect(jsonPath("$.data.code", equalTo(MEDICATION_CODE_2)))
+        .andExpect(jsonPath("$.data.weight", equalTo(MEDICATION_WEIGHT)));
   }
 
   @Test
   void testFindMedicationById() throws Exception {
-    MedicationDTO medicationDTO = createMedicationDTO(MEDICATION_ID);
-    given(medicationService.findMedicationById(MEDICATION_ID))
+    MedicationDTO medicationDTO = createMedicationDTO(ID);
+    given(medicationService.findMedicationById(ID))
         .willReturn(medicationDTO);
-    mockMvc.perform(get(BASE_PATH + MEDICATION_BASE_URL + "/" + MEDICATION_ID)
+    mockMvc.perform(get(BASE_PATH + MEDICATION_BASE_URL + "/" + ID)
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").exists())
-        .andExpect(jsonPath("$.name", equalTo(MEDICATION_NAME)))
-        .andExpect(jsonPath("$.code", equalTo(MEDICATION_CODE)))
-        .andExpect(jsonPath("$.weight", equalTo(MEDICATION_WEIGHT)));
+        .andExpect(jsonPath("$.data.id").exists())
+        .andExpect(jsonPath("$.data.name", equalTo(MEDICATION_NAME)))
+        .andExpect(jsonPath("$.data.code", equalTo(MEDICATION_CODE)))
+        .andExpect(jsonPath("$.data.weight", equalTo(MEDICATION_WEIGHT)));
   }
 
   @Test
   void testDeleteMedicationById() throws Exception {
-    mockMvc.perform(delete(BASE_PATH + MEDICATION_BASE_URL + "/" + MEDICATION_ID)
+    mockMvc.perform(delete(BASE_PATH + MEDICATION_BASE_URL + "/" + ID)
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON))
         .andDo(print())

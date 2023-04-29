@@ -6,9 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.io.Serializable;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity(name = MEDICATION)
-public class Medication {
+@SQLDelete(sql = "UPDATE medication SET deleted = true WHERE id=?")
+public class Medication implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,7 @@ public class Medication {
   private int weight;
   private String code;
   private String image;
+  private boolean deleted = Boolean.FALSE;
 
   public Long getId() {
     return id;
@@ -56,5 +60,13 @@ public class Medication {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 }

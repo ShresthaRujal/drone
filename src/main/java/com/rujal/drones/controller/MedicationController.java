@@ -1,16 +1,15 @@
 package com.rujal.drones.controller;
 
-import static com.rujal.drones.utils.Constants.Path.DELETE_BY_ID;
-import static com.rujal.drones.utils.Constants.Path.FETCH_BY_ID;
 import static com.rujal.drones.utils.Constants.Path.MEDICATION_BASE_URL;
-import static com.rujal.drones.utils.MessagePropertyConstants.DELETED;
+import static com.rujal.drones.utils.Constants.Path.PATH_PARAM_ID;
+import static com.rujal.drones.utils.MessagePropertyConstants.DELETED_MEDICATION;
 import static com.rujal.drones.utils.MessageUtils.getMessage;
 import static com.rujal.drones.utils.Response.success;
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 import com.rujal.drones.dto.MedicationDTO;
 import com.rujal.drones.service.MedicationService;
+import com.rujal.drones.utils.Constants.Path;
 import com.rujal.drones.utils.Response;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -71,20 +70,20 @@ public class MedicationController {
    * @param id is a unique identifier or primary key
    * @return {@link MedicationDTO}
    */
-  @GetMapping(FETCH_BY_ID)
-  public ResponseEntity<MedicationDTO> getMedication(@PathVariable Long id) {
+  @GetMapping(Path.PATH_PARAM_ID)
+  public ResponseEntity<Response> getMedication(@PathVariable Long id) {
     LOG.info("Fetching Medication : {}", id);
-    return new ResponseEntity<>(medicationService.findMedicationById(id), OK);
+    return ResponseEntity.ok(success(medicationService.findMedicationById(id)));
   }
 
   /**
    * Deletes the Medication by ID
    * @param id is a unique identifier or primary key
    */
-  @DeleteMapping(DELETE_BY_ID)
-  public ResponseEntity<String> deleteMedication(@PathVariable Long id) {
+  @DeleteMapping(PATH_PARAM_ID)
+  public ResponseEntity<Response> deleteMedication(@PathVariable Long id) {
     LOG.info("Deleting Medication : {}", id);
     medicationService.deleteMedication(id);
-    return ResponseEntity.ok(getMessage(DELETED.getValue(), id));
+    return ResponseEntity.ok(success(getMessage(DELETED_MEDICATION.getValue(), id)));
   }
 }
