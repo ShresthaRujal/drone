@@ -18,8 +18,8 @@ public class MessageUtils {
    */
   static {
     messageSource = new ReloadableResourceBundleMessageSource();
-    String[] basenames = {"classpath:/ValidationMessages"};
-    messageSource.setBasenames(basenames);
+    String[] baseNames = {"classpath:/ValidationMessages"};
+    messageSource.setBasenames(baseNames);
     messageSource.setDefaultEncoding("UTF-8");
   }
 

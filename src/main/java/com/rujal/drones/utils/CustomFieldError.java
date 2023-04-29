@@ -1,5 +1,8 @@
 package com.rujal.drones.utils;
 
+/**
+ * Use in mapping Field and respective error message
+ */
 public class CustomFieldError {
   private String fieldName;
   private String message;
