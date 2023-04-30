@@ -1,6 +1,7 @@
 package com.rujal.drones.controller;
 
 import static com.rujal.drones.utils.Constants.Path.ADD_MEDICATIONS;
+import static com.rujal.drones.utils.Constants.Path.AVAILABLE_DRONES;
 import static com.rujal.drones.utils.Constants.Path.DRONE_BASE_URL;
 import static com.rujal.drones.utils.Constants.Path.PATH_PARAM_ID;
 import static com.rujal.drones.utils.Model.LIGHT;
@@ -120,5 +121,22 @@ class DroneControllerTest extends BeanConfigTest {
         .andExpect(jsonPath("$.data.batteryCapacity", equalTo(BATTERY.intValue())))
         .andExpect(jsonPath("$.data.weightLimit", equalTo(WEIGHT_LIMIT)))
         .andExpect(jsonPath("$.data.serialNumber", equalTo(SERIAL_NUMBER)));
+  }
+
+  @Test
+  void testCheckAvailableDrones() throws Exception {
+    DroneDTO droneDTO = createDroneDTO(ID);
+    given(droneService.checkAvailableDrones()).willReturn(List.of(droneDTO));
+    mockMvc.perform(get(BASE_PATH + DRONE_BASE_URL + "/" + AVAILABLE_DRONES)
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data[0].id").exists())
+        .andExpect(jsonPath("$.data[0].state", equalTo(IDLE.name())))
+        .andExpect(jsonPath("$.data[0].model", equalTo(LIGHT.name())))
+        .andExpect(jsonPath("$.data[0].batteryCapacity", equalTo(BATTERY.intValue())))
+        .andExpect(jsonPath("$.data[0].weightLimit", equalTo(WEIGHT_LIMIT)))
+        .andExpect(jsonPath("$.data[0].serialNumber", equalTo(SERIAL_NUMBER)));
   }
 }

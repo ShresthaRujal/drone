@@ -37,4 +37,10 @@ public interface DroneService {
    * Audit Drone Status
    */
   void checkAndAuditDroneBatteryLevel();
+
+  /**
+   * Fetch Available Drone that are in IDLE state
+   * @return List of {@link DroneDTO}
+   */
+  List<DroneDTO> checkAvailableDrones();
 }

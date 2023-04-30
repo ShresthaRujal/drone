@@ -293,4 +293,17 @@ class DroneServiceImplTest extends AppDataTest {
     verify(drone, atLeast(1)).setState(stateArgumentCaptor.capture());
     assertEquals(LOADING, stateArgumentCaptor.getValue());
   }
+
+  @Test
+  void testCheckAvailableDronesShouldReturnAvailableDrone() {
+    // Given
+    Drone drone = mockDrone(ID, SERIAL_NUMBER);
+    given(droneRepository.findAllByState(IDLE)).willReturn(List.of(drone));
+    // When
+    List<DroneDTO> resultDroneDTO = droneService.checkAvailableDrones();
+    // Then
+    assertNotNull(resultDroneDTO);
+    assertEquals(ID, resultDroneDTO.get(0).getId());
+    assertEquals(SERIAL_NUMBER, resultDroneDTO.get(0).getSerialNumber());
+  }
 }
