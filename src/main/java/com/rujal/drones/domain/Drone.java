@@ -32,6 +32,7 @@ public class Drone implements Serializable {
   private Long id;
   @Column(unique = true)
   private String serialNumber;
+  @Enumerated(EnumType.STRING)
   private Model model;
   private int weightLimit;
   private BigDecimal batteryCapacity;

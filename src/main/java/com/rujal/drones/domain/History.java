@@ -26,6 +26,8 @@ public class History {
   private List<EventDetail> eventDetails = new ArrayList<>();
   @Enumerated(EnumType.STRING)
   private EventType eventType;
+  private String historyType;
+  private Long typeId;
   @Transient
   private Object oldValue;
   @Transient
@@ -77,5 +79,21 @@ public class History {
 
   public void setNewValue(Object newValue) {
     this.newValue = newValue;
+  }
+
+  public String getHistoryType() {
+    return historyType;
+  }
+
+  public void setHistoryType(String historyType) {
+    this.historyType = historyType;
+  }
+
+  public Long getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(Long typeId) {
+    this.typeId = typeId;
   }
 }

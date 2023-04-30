@@ -1,6 +1,7 @@
 package com.rujal.drones.utils;
 
 import static com.rujal.drones.domain.EventType.ADD_DRONE;
+import static com.rujal.drones.utils.Constants.Database.DRONE;
 import static com.rujal.drones.utils.Model.LIGHT;
 import static com.rujal.drones.utils.State.IDLE;
 import static java.util.Objects.isNull;
@@ -24,7 +25,7 @@ class HistoryUtilsTest extends AppDataTest{
     droneDTO.setBatteryCapacity(UPDATED_BATTERY);
     DroneDTO oldDroneDTO = createDroneDTO(ID);
     // WHEN
-    History history = HistoryUtils.createHistory(oldDroneDTO, droneDTO, ADD_DRONE);
+    History history = HistoryUtils.createHistory(DRONE, ID, oldDroneDTO, droneDTO, ADD_DRONE);
     // THEN
     assertNotNull(history);
     DroneDTO newDroneHistory = (DroneDTO) history.getNewValue();

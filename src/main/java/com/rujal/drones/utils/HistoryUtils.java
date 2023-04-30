@@ -27,13 +27,16 @@ public class HistoryUtils {
   /**
    * Create {@link History} from old value, new value and {@link EventType}
    */
-  public static History createHistory(Object oldValue, Object newValue, EventType eventType) {
+  public static History createHistory(String historyType, Long typeId, Object oldValue,
+      Object newValue, EventType eventType) {
     History history = new History();
     history.setCreateDate(LocalDateTime.now());
     history.setEventType(eventType);
     history.setNewValue(newValue);
     history.setOldValue(oldValue);
     history.setEventDetails(getDiffInEvenDetails(history));
+    history.setHistoryType(historyType);
+    history.setTypeId(typeId);
     return history;
   }
 
