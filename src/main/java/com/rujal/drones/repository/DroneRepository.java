@@ -7,5 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DroneRepository extends JpaRepository<Drone, Long> {
 
+  /**
+   * Fetch Drone by State
+   * @param state {@link State}
+   * @return List of available {@link Drone}
+   */
   List<Drone> findAllByState(State state);
 }

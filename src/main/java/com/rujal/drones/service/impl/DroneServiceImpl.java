@@ -5,6 +5,8 @@ import static com.rujal.drones.utils.DroneUtils.exceptionDroneNotAvailable;
 import static com.rujal.drones.utils.DroneUtils.exceptionDroneNotFound;
 import static com.rujal.drones.utils.DroneUtils.updateState;
 import static com.rujal.drones.utils.HistoryUtils.createHistory;
+import static com.rujal.drones.utils.State.IDLE;
+import static com.rujal.drones.utils.State.LOADED;
 import static java.util.stream.Collectors.toMap;
 
 import com.rujal.drones.converters.DroneConverter;
@@ -84,6 +86,7 @@ public class DroneServiceImpl extends DroneConverter implements DroneService {
         .orElseThrow(exceptionDroneNotAvailable(droneId));
     List<Medication> medications = medicationService.findMedicationByIds(medicationIds);
     drone.setMedications(medications);
+    drone.setState(LOADED);
     return fromEntity(droneRepository.save(drone));
   }
 
@@ -105,5 +108,12 @@ public class DroneServiceImpl extends DroneConverter implements DroneService {
         historyService.addChangeHistory(createHistory(oldDroneStatus, drone, UPDATE_DRONE_BATTERY));
       }
     });
+  }
+
+  @Override
+  @Transactional
+  public List<DroneDTO> checkAvailableDrones() {
+    LOG.info("Checking available Drones");
+    return fromEntity(droneRepository.findAllByState(IDLE));
   }
 }

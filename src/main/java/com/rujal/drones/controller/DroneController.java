@@ -1,6 +1,7 @@
 package com.rujal.drones.controller;
 
 import static com.rujal.drones.utils.Constants.Path.ADD_MEDICATIONS;
+import static com.rujal.drones.utils.Constants.Path.AVAILABLE_DRONES;
 import static com.rujal.drones.utils.Constants.Path.DRONE_BASE_URL;
 import static com.rujal.drones.utils.Constants.Path.ID;
 import static com.rujal.drones.utils.Constants.Path.PATH_PARAM_ID;
@@ -98,5 +99,15 @@ public class DroneController {
       @RequestBody List<Long> medicationIds) {
     LOG.info("Request for Loading Medication on Drone : {}", droneId);
     return ResponseEntity.ok(success(droneService.addMedicationOnDrone(droneId, medicationIds)));
+  }
+
+  /**
+   * Fetch Available Drone
+   * @return
+   */
+  @GetMapping(AVAILABLE_DRONES)
+  public ResponseEntity<Response> checkAvailableDrones() {
+    LOG.info("Request for checking Available Drones");
+    return ResponseEntity.ok(success(droneService.checkAvailableDrones()));
   }
 }
