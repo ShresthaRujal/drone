@@ -19,6 +19,11 @@ public class Constants {
     public static final String VALIDATION_MESSAGE = "VALIDATION MESSAGE";
   }
 
+  public static class Field {
+    private Field() {}
+    public static final String CREATED_DATE = "createdDate";
+  }
+
   public static class Database {
 
     private Database() {
@@ -30,6 +35,9 @@ public class Constants {
     public static final String JOIN_DRONE_MEDICATION = "drone_medication";
     public static final String JOIN_DRONE_ID = "drone_id";
     public static final String JOIN_MEDICATION_ID = "medication_id";
+    public static final String EVENT_DETAIL = "even_detail";
+    public static final String EVENT_DETAIL_COL_DEFINITION = "even_detail[]";
+    public static final String EVENT_DETAILS = "even_details";
   }
   
   public static class Path {

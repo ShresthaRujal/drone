@@ -1,5 +1,6 @@
 package com.rujal.drones.utils;
 
+import static com.rujal.drones.utils.MessagePropertyConstants.DRONE_NOT_AVAILABLE_NOW;
 import static com.rujal.drones.utils.MessagePropertyConstants.DRONE_NOT_FOUND;
 import static com.rujal.drones.utils.MessageUtils.getMessage;
 import static com.rujal.drones.utils.State.IDLE;
@@ -22,6 +23,13 @@ public class DroneUtils {
   }
 
   /**
+   * Throw Drone Not Found Exception
+   */
+  public static Supplier<ResourceNotFoundException> exceptionDroneNotAvailable(Long id) {
+    return () -> new ResourceNotFoundException(getMessage(DRONE_NOT_AVAILABLE_NOW.getValue(), id));
+  }
+
+  /**
    * Check if Drone has Sufficient Battery
    */
   public static boolean hasSufficientBattery(Drone drone) {
@@ -36,17 +44,12 @@ public class DroneUtils {
   }
 
   /**
-   * Check if Drone is Not Loadable
-   */
-  public static boolean isDroneNotLoadable(Drone drone) {
-    return !isDroneLoadable(drone);
-  }
-
-  /**
    * Set Drone state as LOADING
    */
-  public static Drone updateStateLoading(Drone drone) {
-    drone.setState(LOADING);
+  public static Drone updateState(Drone drone) {
+    if (!hasSufficientBattery(drone)) {
+      drone.setState(LOADING);
+    }
     return drone;
   }
 }

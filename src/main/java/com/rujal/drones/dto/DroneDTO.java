@@ -7,6 +7,7 @@ import com.rujal.drones.utils.Model;
 import com.rujal.drones.utils.State;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.validator.constraints.Range;
 
@@ -21,7 +22,7 @@ public class DroneDTO {
   private BigDecimal batteryCapacity;
   private State state;
 
-  private List<MedicationDTO> medications;
+  private List<MedicationDTO> medications = new ArrayList<>();
 
   public Long getId() {
     return id;
