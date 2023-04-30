@@ -1,0 +1,10 @@
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (7, 64.88, 'HEAVY', '789123456', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (1, 92.87, 'LIGHT', '123456789', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (2, 34.03, 'MIDDLE', '234567891', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (3, 18.11, 'CRUISER', '345678912', 'LOADING', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (4, 70.12, 'HEAVY', '456789123', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (5, 77.13, 'LIGHT', '567891234', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (6, 3.68, 'MIDDLE', '67891234', 'LOADING', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (9, 22.11, 'LIGHT', '912345678', 'LOADING', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (10, 97.98, 'LIGHT', '013456789', 'IDLE', 500);
+INSERT INTO public.drones (id, battery_capacity, model, serial_number, state, weight_limit) VALUES (8, 30.31, 'CRUISER', '891234567', 'IDLE', 500);
