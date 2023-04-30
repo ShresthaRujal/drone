@@ -2,21 +2,27 @@ package com.rujal.drones.service.impl;
 
 import static com.rujal.drones.utils.Model.LIGHT;
 import static com.rujal.drones.utils.State.IDLE;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import com.rujal.drones.domain.Drone;
+import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.DroneDTO;
 import com.rujal.drones.exceptions.ResourceNotFoundException;
 import com.rujal.drones.repository.DroneRepository;
 import com.rujal.drones.utils.AppDataTest;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +38,8 @@ class DroneServiceImplTest extends AppDataTest {
   private DroneServiceImpl droneService;
   @Mock
   private DroneRepository droneRepository;
+  @Mock
+  private MedicationServiceImpl medicationService;
 
   @Test
   void testAddDroneShouldAddDrone() {
@@ -73,7 +81,7 @@ class DroneServiceImplTest extends AppDataTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
         () -> droneService.updateDrone(droneDTO));
     // Then
-    assertEquals("Not Found : Drone with ID 1.",exception.getLocalizedMessage());
+    assertEquals("Not Found : Drone with ID 1.", exception.getLocalizedMessage());
   }
 
   @Test
@@ -97,7 +105,7 @@ class DroneServiceImplTest extends AppDataTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
         () -> droneService.findDroneById(ID));
     // Then
-    assertEquals("Not Found : Drone with ID 1.",exception.getLocalizedMessage());
+    assertEquals("Not Found : Drone with ID 1.", exception.getLocalizedMessage());
   }
 
   @Test
@@ -127,7 +135,90 @@ class DroneServiceImplTest extends AppDataTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
         () -> droneService.deleteDrone(ID));
     // Then
-    assertEquals("Not Found : Drone with ID 1.",exception.getLocalizedMessage());
+    assertEquals("Not Found : Drone with ID 1.", exception.getLocalizedMessage());
     verify(droneRepository, never()).delete(any(Drone.class));
+  }
+
+  @Test
+  void testAddMedicationOnDroneWithExistingDataShouldLoadDrone() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    List<Medication> medications = asList(mockMedication(ID), mockMedication(ID_2));
+    Drone drone = mockDrone(ID);
+    given(droneRepository.findById(ID)).willReturn(Optional.of(drone));
+    given(medicationService.findMedicationByIds(medicationIds)).willReturn(medications);
+    given(droneRepository.save(drone)).willReturn(drone);
+    // When
+    droneService.addMedicationOnDrone(ID, asList(ID, ID_2));
+    // Then
+    verify(droneRepository).save(any(Drone.class));
+    ArgumentCaptor<List<Medication>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+    verify(drone).setMedications(listArgumentCaptor.capture());
+    assertNotNull(listArgumentCaptor.getValue());
+    assertEquals(2, listArgumentCaptor.getValue().size());
+    Medication medication_0 = listArgumentCaptor.getValue().get(0);
+    assertEquals(ID, medication_0.getId());
+    assertMedication(medication_0);
+    Medication medication_1 = listArgumentCaptor.getValue().get(1);
+    assertMedication(medication_1);
+    assertEquals(ID_2, medication_1.getId());
+  }
+
+  @Test
+  void testAddMedicationOnDroneWithNoneExistingDroneShouldThrowException() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    List<Medication> medications = asList(mockMedication(ID), mockMedication(ID_2));
+    Drone drone = mockDrone(ID);
+    given(droneRepository.findById(ID)).willReturn(Optional.of(drone));
+    given(medicationService.findMedicationByIds(medicationIds)).willReturn(medications);
+    given(droneRepository.save(drone)).willReturn(drone);
+    // When
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+        () -> droneService.addMedicationOnDrone(ID, asList(ID, ID_2)));
+    // Then
+    assertEquals("Not Found : Drone with ID 1.", exception.getLocalizedMessage());
+    verify(droneRepository, never()).delete(any(Drone.class));
+    verify(medicationService, never()).findMedicationByIds(any());
+    verify(droneRepository, never()).save(any(Drone.class));
+  }
+
+  @Test
+  void testAddMedicationOnDroneWithExistingDroneAndNoneExistingMedicationShouldAddEmptyMedications() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    Drone drone = mockDrone(ID);
+    given(droneRepository.findById(ID)).willReturn(Optional.of(drone));
+    given(medicationService.findMedicationByIds(medicationIds)).willReturn(emptyList());
+    given(droneRepository.save(drone)).willReturn(drone);
+    // When
+    droneService.addMedicationOnDrone(ID, asList(ID, ID_2));
+    // Then
+    verify(droneRepository).save(any(Drone.class));
+    ArgumentCaptor<List<Medication>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+    verify(drone).setMedications(listArgumentCaptor.capture());
+    assertTrue(isEmpty(listArgumentCaptor.getValue()));
+  }
+
+  @Test
+  void testAddMedicationOnDroneWithExistingDroneAndOneExistingMedicationShouldAddOneMedications() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    List<Medication> medications = asList(mockMedication(ID));
+    Drone drone = mockDrone(ID);
+    given(droneRepository.findById(ID)).willReturn(Optional.of(drone));
+    given(medicationService.findMedicationByIds(medicationIds)).willReturn(medications);
+    given(droneRepository.save(drone)).willReturn(drone);
+    // When
+    droneService.addMedicationOnDrone(ID, asList(ID, ID_2));
+    // Then
+    verify(droneRepository).save(any(Drone.class));
+    ArgumentCaptor<List<Medication>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+    verify(drone).setMedications(listArgumentCaptor.capture());
+    assertNotNull(listArgumentCaptor.getValue());
+    assertEquals(1, listArgumentCaptor.getValue().size());
+    Medication medication_0 = listArgumentCaptor.getValue().get(0);
+    assertEquals(ID, medication_0.getId());
+    assertMedication(medication_0);
   }
 }
