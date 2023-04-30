@@ -32,4 +32,9 @@ public interface DroneService {
    * @return {@link DroneDTO} in which Medication is added to
    */
   DroneDTO addMedicationOnDrone(Long droneId, List<Long> medicationIds);
+
+  /**
+   * Audit Drone Status
+   */
+  void checkAndAuditDroneBatteryLevel();
 }

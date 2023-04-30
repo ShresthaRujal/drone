@@ -5,12 +5,14 @@ import static com.rujal.drones.utils.State.IDLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.withSettings;
 
 import com.rujal.drones.domain.Drone;
 import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.DroneDTO;
 import com.rujal.drones.dto.MedicationDTO;
 import java.math.BigDecimal;
+import org.mockito.Mockito;
 
 public abstract class AppDataTest {
 
@@ -24,6 +26,7 @@ public abstract class AppDataTest {
   public static final String SERIAL_NUMBER = "SERIAL_1";
   public static final String SERIAL_NUMBER_2 = "SERIAL_2";
   public static final BigDecimal BATTERY = new BigDecimal(100);
+  public static final BigDecimal UPDATED_BATTERY = new BigDecimal(1.129);
   public static final int WEIGHT_LIMIT = 500;
 
   public MedicationDTO mockMedicationDTO(Long id) {
@@ -32,9 +35,10 @@ public abstract class AppDataTest {
     return medicationDTO;
   }
 
-  public DroneDTO mockDroneDTO(Long id) {
+  public DroneDTO mockDroneDTO(Long id, String serialNumber) {
     DroneDTO droneDTO = mock(DroneDTO.class);
     given(droneDTO.getId()).willReturn(id);
+    given(droneDTO.getSerialNumber()).willReturn(serialNumber);
     return droneDTO;
   }
 
@@ -48,7 +52,7 @@ public abstract class AppDataTest {
   }
 
   public Medication mockMedication(Long id) {
-    Medication medication = mock(Medication.class);
+    Medication medication = mockSerializableClass(Medication.class);
     given(medication.getId()).willReturn(id);
     given(medication.getCode()).willReturn(MEDICATION_CODE);
     given(medication.getImage()).willReturn(MEDICATION_IMAGE);
@@ -57,12 +61,12 @@ public abstract class AppDataTest {
     return medication;
   }
 
-  public Drone mockDrone(Long id) {
-    Drone drone = mock(Drone.class);
+  public Drone mockDrone(Long id, String serialNumber) {
+    Drone drone = mockSerializableClass(Drone.class);
     given(drone.getId()).willReturn(id);
     given(drone.getState()).willReturn(IDLE);
     given(drone.getBatteryCapacity()).willReturn(BATTERY);
-    given(drone.getSerialNumber()).willReturn(SERIAL_NUMBER);
+    given(drone.getSerialNumber()).willReturn(serialNumber);
     given(drone.getWeightLimit()).willReturn(WEIGHT_LIMIT);
     given(drone.getModel()).willReturn(LIGHT);
     return drone;
@@ -84,5 +88,9 @@ public abstract class AppDataTest {
     assertEquals(MEDICATION_IMAGE, medicationArgs.getImage());
     assertEquals(MEDICATION_NAME, medicationArgs.getName());
     assertEquals(MEDICATION_WEIGHT, medicationArgs.getWeight());
+  }
+
+  public static <T> T mockSerializableClass(Class<T> clz) {
+    return mock(clz, withSettings().serializable());
   }
 }

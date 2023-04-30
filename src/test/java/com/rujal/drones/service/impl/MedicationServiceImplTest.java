@@ -1,20 +1,25 @@
 package com.rujal.drones.service.impl;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.MedicationDTO;
 import com.rujal.drones.exceptions.ResourceNotFoundException;
 import com.rujal.drones.repository.MedicationRepository;
 import com.rujal.drones.utils.AppDataTest;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -122,5 +127,32 @@ class MedicationServiceImplTest extends AppDataTest {
     // Then
     assertEquals("Not Found : Medication with ID 1.",exception.getLocalizedMessage());
     verify(medicationRepository, never()).delete(any(Medication.class));
+  }
+
+  @Test
+  void testFindMedicationByIdsShouldReturnMedications() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    List<Medication> medications = asList(mockMedication(ID), mockMedication(ID_2));
+    given(medicationRepository.findAllById(medicationIds)).willReturn(medications);
+    // When
+    List<Medication> medicationList = medicationService.findMedicationByIds(medicationIds);
+    // Then
+    assertEquals(medicationIds.size(), medicationList.size());
+    assertEquals(ID, medicationList.get(0).getId());
+    assertMedication(medicationList.get(0));
+    assertEquals(ID_2, medicationList.get(1).getId());
+    assertMedication(medicationList.get(1));
+  }
+
+  @Test
+  void testFindMedicationByIdsWithNoDataShouldReturnEmptyMedications() {
+    // Given
+    List<Long> medicationIds = asList(ID, ID_2);
+    given(medicationRepository.findAllById(medicationIds)).willReturn(emptyList());
+    // When
+    List<Medication> medicationList = medicationService.findMedicationByIds(medicationIds);
+    // Then
+    assertTrue(isEmpty(medicationList));
   }
 }
