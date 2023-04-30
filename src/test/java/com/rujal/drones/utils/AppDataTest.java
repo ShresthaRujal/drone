@@ -2,6 +2,7 @@ package com.rujal.drones.utils;
 
 import static com.rujal.drones.utils.Model.LIGHT;
 import static com.rujal.drones.utils.State.IDLE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -76,5 +77,12 @@ public abstract class AppDataTest {
     droneDTO.setWeightLimit(WEIGHT_LIMIT);
     droneDTO.setModel(LIGHT);
     return droneDTO;
+  }
+
+  public static void assertMedication(Medication medicationArgs) {
+    assertEquals(MEDICATION_CODE, medicationArgs.getCode());
+    assertEquals(MEDICATION_IMAGE, medicationArgs.getImage());
+    assertEquals(MEDICATION_NAME, medicationArgs.getName());
+    assertEquals(MEDICATION_WEIGHT, medicationArgs.getWeight());
   }
 }

@@ -49,7 +49,7 @@ public class MedicationController {
   public ResponseEntity<Response> createMedication(
       @Valid @RequestBody MedicationDTO medicationDTO
   ) {
-    LOG.info("Received a request to add new Medication");
+    LOG.info("Request for adding new Medication");
     return new ResponseEntity<>(success(medicationService.addMedication(medicationDTO)), CREATED);
   }
 
@@ -61,7 +61,7 @@ public class MedicationController {
    */
   @PutMapping
   public ResponseEntity<Response> updateMedication(@Valid @RequestBody MedicationDTO medicationDTO) {
-    LOG.info("Update Medication : {}", medicationDTO.getId());
+    LOG.info("Request for Updating Medication : {}", medicationDTO.getId());
     return ResponseEntity.ok(success(medicationService.updateMedication(medicationDTO)));
   }
 
@@ -72,7 +72,7 @@ public class MedicationController {
    */
   @GetMapping(Path.PATH_PARAM_ID)
   public ResponseEntity<Response> getMedication(@PathVariable Long id) {
-    LOG.info("Fetching Medication : {}", id);
+    LOG.info("Request for Fetching Medication : {}", id);
     return ResponseEntity.ok(success(medicationService.findMedicationById(id)));
   }
 
@@ -82,7 +82,7 @@ public class MedicationController {
    */
   @DeleteMapping(PATH_PARAM_ID)
   public ResponseEntity<Response> deleteMedication(@PathVariable Long id) {
-    LOG.info("Deleting Medication : {}", id);
+    LOG.info("Request for Deleting Medication : {}", id);
     medicationService.deleteMedication(id);
     return ResponseEntity.ok(success(getMessage(DELETED_MEDICATION.getValue(), id)));
   }

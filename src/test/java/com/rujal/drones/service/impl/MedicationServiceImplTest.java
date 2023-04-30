@@ -109,10 +109,7 @@ class MedicationServiceImplTest extends AppDataTest {
     verify(medicationRepository).delete(medicationArgumentCaptor.capture());
     Medication medicationArgs = medicationArgumentCaptor.getValue();
     assertEquals(ID, medicationArgs.getId());
-    assertEquals(MEDICATION_CODE, medicationArgs.getCode());
-    assertEquals(MEDICATION_IMAGE, medicationArgs.getImage());
-    assertEquals(MEDICATION_NAME, medicationArgs.getName());
-    assertEquals(MEDICATION_WEIGHT, medicationArgs.getWeight());
+    assertMedication(medicationArgs);
   }
 
   @Test

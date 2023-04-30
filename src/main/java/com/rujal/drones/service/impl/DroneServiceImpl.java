@@ -1,14 +1,20 @@
 package com.rujal.drones.service.impl;
 
 import static com.rujal.drones.utils.DroneUtils.exceptionDroneNotFound;
+import static com.rujal.drones.utils.MessagePropertyConstants.DRONE_NOT_AVAILABLE_NOW;
 
 import com.rujal.drones.converters.DroneConverter;
 import com.rujal.drones.domain.Drone;
+import com.rujal.drones.domain.Medication;
 import com.rujal.drones.dto.DroneDTO;
+import com.rujal.drones.exceptions.ResourceNotFoundException;
 import com.rujal.drones.repository.DroneRepository;
 import com.rujal.drones.service.DroneService;
+import com.rujal.drones.service.MedicationService;
+import com.rujal.drones.utils.DroneUtils;
 import com.rujal.drones.utils.NullAwareBeanUtils;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,9 +24,11 @@ public class DroneServiceImpl extends DroneConverter implements DroneService {
 
   private static final Logger LOG = LoggerFactory.getLogger(DroneServiceImpl.class);
   private final DroneRepository droneRepository;
+  private final MedicationService medicationService;
 
-  public DroneServiceImpl (DroneRepository droneRepository) {
+  public DroneServiceImpl (DroneRepository droneRepository, MedicationService medicationService) {
     this.droneRepository = droneRepository;
+    this.medicationService = medicationService;
   }
 
   @Override
@@ -51,5 +59,16 @@ public class DroneServiceImpl extends DroneConverter implements DroneService {
     LOG.info("Delete Drone : {}", id);
     Drone drone = droneRepository.findById(id).orElseThrow(exceptionDroneNotFound(id));
     droneRepository.delete(drone);
+  }
+
+  @Override
+  public DroneDTO addMedicationOnDrone(Long droneId, List<Long> medicationIds) {
+    LOG.info("Loading Medication on Drone : {}", droneId);
+    Drone drone = droneRepository.findById(droneId)
+        .filter(DroneUtils::isDroneLoadable)
+        .orElseThrow(() -> new ResourceNotFoundException(DRONE_NOT_AVAILABLE_NOW.name()));
+    List<Medication> medications = medicationService.findMedicationByIds(medicationIds);
+    drone.setMedications(medications);
+    return fromEntity(droneRepository.save(drone));
   }
 }
