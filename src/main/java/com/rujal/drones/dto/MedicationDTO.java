@@ -6,7 +6,6 @@ import static com.rujal.drones.utils.Constants.Commons.MESSAGE_UPPER_CASE_LETTER
 import static com.rujal.drones.utils.Constants.Commons.UPPER_CASE_LETTERS_NUMBERS_UNDERSCORE;
 
 import jakarta.validation.constraints.Pattern;
-import java.util.List;
 
 public class MedicationDTO {
   private Long id;
@@ -25,8 +24,6 @@ public class MedicationDTO {
    * holds image path of medication case
    */
   private String image;
-
-  private List<DroneDTO> drones;
 
   public Long getId() {
     return id;
@@ -66,13 +63,5 @@ public class MedicationDTO {
 
   public void setImage(String image) {
     this.image = image;
-  }
-
-  public List<DroneDTO> getDrones() {
-    return drones;
-  }
-
-  public void setDrones(List<DroneDTO> drones) {
-    this.drones = drones;
   }
 }
