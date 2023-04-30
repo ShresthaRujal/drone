@@ -1,5 +1,6 @@
 package com.rujal.drones.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rujal.drones.repository.DroneRepository;
 import com.rujal.drones.repository.MedicationRepository;
 import com.rujal.drones.service.DroneService;
@@ -27,5 +28,5 @@ public abstract class BeanConfigTest extends AppDataTest{
   protected MedicationService medicationService;
   @MockBean
   protected DroneService droneService;
-
+  protected final ObjectMapper objectMapper = new ObjectMapper();
 }

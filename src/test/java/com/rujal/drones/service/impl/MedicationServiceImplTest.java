@@ -35,36 +35,36 @@ class MedicationServiceImplTest extends AppDataTest {
   void testAddMedicationShouldAddMedication() {
     // Given
     MedicationDTO medicationDTO = mockMedicationDTO(null);
-    Medication medication = mockMedication(MEDICATION_ID);
+    Medication medication = mockMedication(ID);
     given(medicationRepository.save(any(Medication.class))).willReturn(medication);
     // When
     MedicationDTO medicationDTOResult = medicationService.addMedication(medicationDTO);
     // Then
-    assertEquals(MEDICATION_ID, medicationDTOResult.getId());
+    assertEquals(ID, medicationDTOResult.getId());
     verify(medicationRepository).save(any(Medication.class));
   }
 
   @Test
   void testUpdateMedicationWithMedicationCodeChangeOnExistingDataShouldUpdateMedication() {
     // Given
-    MedicationDTO medicationDTO = mockMedicationDTO(MEDICATION_ID);
+    MedicationDTO medicationDTO = mockMedicationDTO(ID);
     given(medicationDTO.getCode()).willReturn(MEDICATION_CODE_2);
-    Medication medication = mockMedication(MEDICATION_ID);
+    Medication medication = mockMedication(ID);
     ArgumentCaptor<String> medicationCodeCaptor = ArgumentCaptor.forClass(String.class);
     doNothing().when(medication).setCode(medicationCodeCaptor.capture());
-    given(medicationRepository.findById(MEDICATION_ID)).willReturn(Optional.of(medication));
+    given(medicationRepository.findById(ID)).willReturn(Optional.of(medication));
     given(medicationRepository.save(any(Medication.class))).willReturn(medication);
     // When
     MedicationDTO medicationDTOResult = medicationService.updateMedication(medicationDTO);
     // Then
-    assertEquals(MEDICATION_ID, medicationDTOResult.getId());
+    assertEquals(ID, medicationDTOResult.getId());
     assertEquals(MEDICATION_CODE_2, medicationCodeCaptor.getValue());
   }
 
   @Test
   void testUpdateMedicationWithMedicationCodeChangeOnNoneExistingDataShouldThrowException() {
     // Given
-    MedicationDTO medicationDTO = mockMedicationDTO(MEDICATION_ID);
+    MedicationDTO medicationDTO = mockMedicationDTO(ID);
     given(medicationRepository.findById(medicationDTO.getId())).willReturn(empty());
     // When
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
@@ -76,23 +76,23 @@ class MedicationServiceImplTest extends AppDataTest {
   @Test
   void testFindMedicationByIdWithExistingIdShouldReturnMedication() {
     // Given
-    Medication medication = mockMedication(MEDICATION_ID);
-    given(medicationRepository.findById(MEDICATION_ID)).willReturn(Optional.of(medication));
+    Medication medication = mockMedication(ID);
+    given(medicationRepository.findById(ID)).willReturn(Optional.of(medication));
     // When
-    MedicationDTO resultMedicationDTO = medicationService.findMedicationById(MEDICATION_ID);
+    MedicationDTO resultMedicationDTO = medicationService.findMedicationById(ID);
     // Then
     assertNotNull(resultMedicationDTO);
-    assertEquals(MEDICATION_ID, resultMedicationDTO.getId());
+    assertEquals(ID, resultMedicationDTO.getId());
     assertEquals(MEDICATION_CODE, resultMedicationDTO.getCode());
   }
 
   @Test
   void testFindMedicationByIdWithNoneExistingIdShouldThrowResourceNotFoundException() {
     // Given
-    given(medicationRepository.findById(MEDICATION_ID)).willReturn(empty());
+    given(medicationRepository.findById(ID)).willReturn(empty());
     // When
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-        () -> medicationService.findMedicationById(MEDICATION_ID));
+        () -> medicationService.findMedicationById(ID));
     // Then
     assertEquals("Not Found : Medication with ID 1.",exception.getLocalizedMessage());
   }
@@ -100,15 +100,15 @@ class MedicationServiceImplTest extends AppDataTest {
   @Test
   void testDeleteMedicationWithExistingIdShouldDeleteMedication() {
     // Given
-    Medication medication = mockMedication(MEDICATION_ID);
-    given(medicationRepository.findById(MEDICATION_ID)).willReturn(Optional.of(medication));
+    Medication medication = mockMedication(ID);
+    given(medicationRepository.findById(ID)).willReturn(Optional.of(medication));
     // When
-    medicationService.deleteMedication(MEDICATION_ID);
+    medicationService.deleteMedication(ID);
     // Then
     ArgumentCaptor<Medication> medicationArgumentCaptor = ArgumentCaptor.forClass(Medication.class);
     verify(medicationRepository).delete(medicationArgumentCaptor.capture());
     Medication medicationArgs = medicationArgumentCaptor.getValue();
-    assertEquals(MEDICATION_ID, medicationArgs.getId());
+    assertEquals(ID, medicationArgs.getId());
     assertEquals(MEDICATION_CODE, medicationArgs.getCode());
     assertEquals(MEDICATION_IMAGE, medicationArgs.getImage());
     assertEquals(MEDICATION_NAME, medicationArgs.getName());
@@ -118,10 +118,10 @@ class MedicationServiceImplTest extends AppDataTest {
   @Test
   void testDeleteMedicationWithNoneExistingIdShouldThrowResourceNotFoundException() {
     // Given
-    given(medicationRepository.findById(MEDICATION_ID)).willReturn(empty());
+    given(medicationRepository.findById(ID)).willReturn(empty());
     // When
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-        () -> medicationService.deleteMedication(MEDICATION_ID));
+        () -> medicationService.deleteMedication(ID));
     // Then
     assertEquals("Not Found : Medication with ID 1.",exception.getLocalizedMessage());
     verify(medicationRepository, never()).delete(any(Medication.class));
