@@ -1,6 +1,7 @@
 package com.rujal.drones.service.impl;
 
 import static com.rujal.drones.domain.EventType.UPDATE_DRONE_BATTERY;
+import static com.rujal.drones.utils.Constants.Database.DRONE;
 import static com.rujal.drones.utils.DroneUtils.exceptionDroneNotAvailable;
 import static com.rujal.drones.utils.DroneUtils.exceptionDroneNotFound;
 import static com.rujal.drones.utils.DroneUtils.updateState;
@@ -105,7 +106,9 @@ public class DroneServiceImpl extends DroneConverter implements DroneService {
             .getBatteryCapacity();
         drone.setBatteryCapacity(currentBatteryCapacity);
         updateState(drone);
-        historyService.addChangeHistory(createHistory(oldDroneStatus, drone, UPDATE_DRONE_BATTERY));
+        historyService.addChangeHistory(
+            createHistory(DRONE, drone.getId(), oldDroneStatus, drone, UPDATE_DRONE_BATTERY)
+        );
       }
     });
   }
