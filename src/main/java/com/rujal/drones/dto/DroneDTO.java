@@ -5,12 +5,14 @@ import static com.rujal.drones.utils.Constants.ValidationMessages.VALIDATION_WEI
 
 import com.rujal.drones.utils.Model;
 import com.rujal.drones.utils.State;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.validator.constraints.Range;
 
+@Schema
 public class DroneDTO {
 
   private Long id;
@@ -21,7 +23,7 @@ public class DroneDTO {
   private int weightLimit;
   private BigDecimal batteryCapacity;
   private State state;
-
+  @Schema(accessMode = Schema.AccessMode.READ_ONLY)
   private List<MedicationDTO> medications = new ArrayList<>();
 
   public Long getId() {

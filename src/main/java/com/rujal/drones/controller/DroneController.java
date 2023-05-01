@@ -14,6 +14,8 @@ import com.rujal.drones.dto.DroneDTO;
 import com.rujal.drones.service.DroneService;
 import com.rujal.drones.utils.Constants.Path;
 import com.rujal.drones.utils.Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.slf4j.Logger;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(DRONE_BASE_URL)
+@Tag(name = "Drone", description = "Drone management APIs")
 public class DroneController {
 
   private static final Logger LOG = LoggerFactory.getLogger(DroneController.class);
@@ -49,6 +52,7 @@ public class DroneController {
    * @param {@link DroneDTO
    * @return {@link DroneDTO}
    */
+  @Operation(summary = "Register Drone")
   @PostMapping
   public ResponseEntity<Response> createDrone(@Valid @RequestBody DroneDTO droneDTO) {
     LOG.info("Request for adding new Drone");
@@ -61,6 +65,7 @@ public class DroneController {
    * @param {@link DroneDTO} should contain unique identifier for successful updates
    * @return {@link DroneDTO}
    */
+  @Operation(summary = "Update Drone")
   @PutMapping
   public ResponseEntity<Response> updateDrone(@Valid @RequestBody DroneDTO droneDTO) {
     LOG.info("Request for Updating Drone : {}", droneDTO.getId());
@@ -73,6 +78,7 @@ public class DroneController {
    * @param id is a unique identifier or primary key
    * @return {@link DroneDTO}
    */
+  @Operation(summary = "Fetch Drone By id with Medication if loaded")
   @GetMapping(Path.PATH_PARAM_ID)
   public ResponseEntity<Response> getDrone(@PathVariable Long id) {
     LOG.info("Request for Fetching Drone : {}", id);
@@ -84,6 +90,7 @@ public class DroneController {
    *
    * @param id is a unique identifier or primary key
    */
+  @Operation(summary = "Delete Drone")
   @DeleteMapping(PATH_PARAM_ID)
   public ResponseEntity<Response> deleteDrone(@PathVariable Long id) {
     LOG.info("Request for Deleting Drone : {}", id);
@@ -94,6 +101,7 @@ public class DroneController {
   /**
    * Load Medication on Drone
    */
+  @Operation(summary = "Load Drone with Medications")
   @PostMapping(PATH_PARAM_ID + ADD_MEDICATIONS)
   public ResponseEntity<Response> loadMedicationOnDrone(@PathVariable(ID) Long droneId,
       @RequestBody List<Long> medicationIds) {
@@ -105,6 +113,7 @@ public class DroneController {
    * Fetch Available Drone
    * @return
    */
+  @Operation(summary = "Fetch currently available Drone")
   @GetMapping(AVAILABLE_DRONES)
   public ResponseEntity<Response> checkAvailableDrones() {
     LOG.info("Request for checking Available Drones");

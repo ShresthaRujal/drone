@@ -11,6 +11,7 @@ import com.rujal.drones.dto.MedicationDTO;
 import com.rujal.drones.service.MedicationService;
 import com.rujal.drones.utils.Constants.Path;
 import com.rujal.drones.utils.Response;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,7 @@ public class MedicationController {
    * @param {@link MedicationDTO}
    * @return {@link MedicationDTO}
    */
+  @Operation(summary = "Add Medication")
   @PostMapping
   public ResponseEntity<Response> createMedication(
       @Valid @RequestBody MedicationDTO medicationDTO
@@ -59,6 +61,7 @@ public class MedicationController {
    * @param {@link MedicationDTO} should contain unique identifier for successful updates
    * @return {@link MedicationDTO}
    */
+  @Operation(summary = "Update Medication")
   @PutMapping
   public ResponseEntity<Response> updateMedication(@Valid @RequestBody MedicationDTO medicationDTO) {
     LOG.info("Request for Updating Medication : {}", medicationDTO.getId());
@@ -70,6 +73,7 @@ public class MedicationController {
    * @param id is a unique identifier or primary key
    * @return {@link MedicationDTO}
    */
+  @Operation(summary = "Fetch Medication by Id")
   @GetMapping(Path.PATH_PARAM_ID)
   public ResponseEntity<Response> getMedication(@PathVariable Long id) {
     LOG.info("Request for Fetching Medication : {}", id);
@@ -80,6 +84,7 @@ public class MedicationController {
    * Deletes the Medication by ID
    * @param id is a unique identifier or primary key
    */
+  @Operation(summary = "Delete Medication by id")
   @DeleteMapping(PATH_PARAM_ID)
   public ResponseEntity<Response> deleteMedication(@PathVariable Long id) {
     LOG.info("Request for Deleting Medication : {}", id);
