@@ -6,6 +6,9 @@ Medication items that are (urgently) needed in locations with difficult access
 The app contains REST API that allows to communicate with the drones.
 The specific communication with the drone is not included within this app.
 
+## Code and Format
+[Google Java Code Format](https://google.github.io/styleguide/javaguide.html) 
+
 ## Requirements
 
 For building and running the application you need:
